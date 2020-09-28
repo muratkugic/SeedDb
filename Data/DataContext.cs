@@ -3,6 +3,7 @@ using SwapiBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace SwapiBackend.Data
@@ -17,9 +18,12 @@ namespace SwapiBackend.Data
         public DbSet<SpacePort> SpacePorts { get; set; }
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<Visitor> Visitors { get; set; }
+        public DbSet<VisitorParking> VisitorParkings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VisitorParking>().HasKey(x => new { x.ParkingSpotId, x.VisitorId });
+
             modelBuilder.Entity<SpacePort>().ToTable("Parkinglot");
             modelBuilder.Entity<SpacePort>().HasKey(p => p.SpacePortId);
             modelBuilder.Entity<SpacePort>().HasData(new

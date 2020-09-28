@@ -29,6 +29,7 @@ namespace SwapiBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IVisitorParkingService, VisitorParkingService>();
             services.AddControllers();
             services.AddScoped<ISpacePortService, SpacePortService>();
             services.AddScoped<IParkingSpotService, ParkingSpotService>();

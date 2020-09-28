@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwapiBackend.Data;
 
 namespace SwapiBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200928172200_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,6 +120,8 @@ namespace SwapiBackend.Migrations
 
                     b.HasKey("ParkingSpotId", "VisitorId");
 
+                    b.HasIndex("VisitorId");
+
                     b.ToTable("VisitorParkings");
                 });
 
@@ -126,6 +130,21 @@ namespace SwapiBackend.Migrations
                     b.HasOne("SwapiBackend.Models.SpacePort", "SpacePort")
                         .WithMany("ParkingSpots")
                         .HasForeignKey("SpacePortId");
+                });
+
+            modelBuilder.Entity("SwapiBackend.Models.VisitorParking", b =>
+                {
+                    b.HasOne("SwapiBackend.Models.ParkingSpot", "ParkingSpot")
+                        .WithMany()
+                        .HasForeignKey("ParkingSpotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SwapiBackend.Models.Visitor", "Visitor")
+                        .WithMany()
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
